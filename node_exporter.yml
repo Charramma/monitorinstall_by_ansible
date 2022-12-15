@@ -1,0 +1,11 @@
+# 安装node_exporter
+- hosts: node_exporter
+  roles:
+    - role: node_exporter
+      tags: node_exporter,install_node_exporter
+
+# 在prometheus中添加node_exporter的监控
+- hosts: prometheus
+  roles:
+    - role: add_monitor/add_node_exporter
+      tags: node_exporter,add_node_exporter

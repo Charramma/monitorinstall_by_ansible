@@ -1,0 +1,26 @@
+#!/bin/bash
+
+start() {
+    nohup /usr/local/grafana/bin/grafana-server --config=/usr/local/grafana/conf/defaults.ini --homepath=/usr/local/grafana --pidfile=/data/grafana/logs/run.pid >> /data/grafana/logs/grafana.log 2>&1  &
+}
+
+stop() {
+    cat /data/grafana/logs/run.pid | xargs kill -9
+    rm -rf /data/grafana/logs/run.pid
+}
+
+if [ $# -eq 0 ] || [ $# -gt 1 ]; then
+    echo "Please enter [start | stop | restart] as parameter."
+else
+    case $1 in
+    "start" )
+        start
+        ;;
+    "stop" )
+        stop
+        ;;
+    * )
+        echo "Please enter [start | stop | restart] as parameter."
+        ;;
+    esac
+fi

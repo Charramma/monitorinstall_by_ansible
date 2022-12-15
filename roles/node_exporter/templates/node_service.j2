@@ -1,0 +1,17 @@
+[Unit]
+Description=Node_exporter
+After=network.target
+
+[Service]
+Type=forking
+PIDFile=/usr/local/monitor/node_exporter/run.pid
+ExecStart=/usr/local/monitor/node_exporter/launcher.sh start
+ExecStop=/usr/local/monitor/node_exporter/launcher.sh stop
+Restart=Always
+User=root
+Group=root
+LimitNOFILE=65535
+LimitNPROC=65535
+
+[Install]
+WantedBy=multi-user.target

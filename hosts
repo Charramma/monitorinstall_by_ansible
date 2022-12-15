@@ -1,0 +1,44 @@
+vm-1 ansible_ssh_host=192.168.5.87 ansible_ssh_port=22 ansible_ssh_user=root ansible_ssh_pass=123456
+vm-2 ansible_ssh_host=192.168.5.98 ansible_ssh_port=22 ansible_ssh_user=root ansible_ssh_pass=123456
+
+########### Prometheus ###############
+[prometheus]
+vm-1
+
+[prometheus:vars]
+prometheus_port=9191
+prometheus_version=2.37.4
+
+
+########### Grafana ##################
+[grafana]
+vm-1
+
+[grafana:vars]
+grafana_version=7.5.4
+grafana_port=3030
+grafana_smtp_host=smtp.exmail.qq.com:465
+grafana_smtp_user=huang.zyn@qq.com
+grafana_smtp_pw=xhflqxclunjfbfha
+grafana_smtp_from_address=huang.zyn@qq.com
+grafana_smtp_from_name=huang.zyn
+
+########### node_exporter ############
+[node_exporter]
+vm-1
+vm-2
+
+[node_exporter:vars]
+node_exporter_version=1.5.0
+node_exporter_port=9100
+
+########### mysqld_exporter ###########
+# 与MySQL安装在同一台机器上
+[mysqld_exporter]
+vm-2
+
+[mysqld_exporter:vars]
+mysqld_exporter_version=0.14.0
+mysqld_exporter_port=9089
+mysqld_exporter_user=mysqld_exporter
+mysqld_exporter_pw=mysqld_exporter123#

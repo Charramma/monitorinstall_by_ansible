@@ -1,0 +1,20 @@
+# 安装prometheus
+- hosts: prometheus
+  roles:
+    - role: prometheus
+      tags: prometheus
+
+# 安装grafana
+- hosts: grafana
+  roles:
+    - role: grafana
+      tags: grafana
+
+# 安装node_exporter
+- import_playbook: node_exporter.yml
+  tags: node_exporter
+
+
+# 安装mysql_exporter
+- import_playbook: mysqld_exporter.yml
+  tags: mysqld_exporter.yml

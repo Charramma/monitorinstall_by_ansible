@@ -1,0 +1,30 @@
+# 创建一个文件夹存放各主机信息
+- name: Create dir
+  file:
+    path: /usr/local/prometheus/groups/nodes
+    state: directory
+
+# 添加node_exporter地址文件
+- name: 
+  template:
+    src: node.j2
+    dest: /usr/local/prometheus/groups/nodes/{{ hostvars[item].inventory_hostname }}.json
+  with_items: "{{ groups['node_exporter'] }}"
+
+# 修改prometheus配置文件
+- name:
+  blockinfile:
+    path: /usr/local/prometheus/prometheus.yml
+    marker: '  # {mark} node_exporter'
+    block: |2
+        - job_name: "node_exporter"
+          file_sd_configs:
+          - files:
+              - /usr/local/prometheus/groups/nodes/*.json
+
+# 重启prometheus
+- name: Start prometheus service
+  service:
+    name: prometheus
+    state: restarted
+    enabled: yes

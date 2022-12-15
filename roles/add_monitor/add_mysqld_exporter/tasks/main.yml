@@ -1,0 +1,30 @@
+# 创建一个文件夹存放mysqld_exporter信息
+- name: Create dir
+  file:
+    path: /usr/local/prometheus/groups/mysqld
+    state: directory
+
+# 添加mysqld_exporter地址文件
+- name:
+  template:
+    src: mysqld.j2
+    dest: /usr/local/prometheus/groups/mysqld/{{ hostvars[item].inventory_hostname }}.json
+  with_items: "{{ groups['mysqld_exporter'] }}"
+
+# 修改prometheus配置文件
+- name:
+  blockinfile:
+    path: /usr/local/prometheus/prometheus.yml
+    marker: '  # {mark} mysqld_exporter'
+    block: |2
+        - job_name: "mysqld_exporter"
+          file_sd_configs:
+          - files:
+              - /usr/local/prometheus/groups/mysqld/*.json
+
+# 重启prometheus
+- name: Start prometheus service
+  service:
+    name: prometheus
+    state: restarted
+    enabled: yes

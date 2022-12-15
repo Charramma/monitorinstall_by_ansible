@@ -1,0 +1,32 @@
+#!/bin/bash
+
+start() {
+    nohup /usr/local/monitor/mysqld_exporter/mysqld_exporter \
+			--config.my-cnf="/usr/local/monitor/mysqld_exporter/my.cnf" \
+			--web.listen-address="0.0.0.0:{{ mysqld_exporter_port }}" \
+			--log.level=debug \
+			>> /data/monitor/mysqld_exporter/logs/mysqld_exporter.log 2>&1  &
+	echo $! > /usr/local/monitor/mysqld_exporter/run.pid
+}
+
+stop() {
+    cat /usr/local/monitor/mysqld_exporter/run.pid | xargs kill -9
+    rm -rf /usr/local/monitor/mysqld_exporter/run.pid
+}
+
+if [ $# -eq 0 ] || [ $# -gt 1 ]; then
+    echo "Please enter [start | stop | restart] as parameter."
+else
+    case $1 in
+    "start" )
+        start
+        ;;
+    "stop" )
+        stop
+        ;;
+    * )
+        echo "Please enter [start | stop | restart] as parameter."
+        ;;
+    esac
+fi
+

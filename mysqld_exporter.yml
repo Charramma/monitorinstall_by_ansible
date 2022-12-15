@@ -1,0 +1,11 @@
+# 安装mysqld_exporter
+- hosts: mysqld_exporter
+  roles:
+    - role: mysqld_exporter
+      tags: mysqld_exporter,install_mysqld_exporter
+
+# 在prometheus中添加mysqld_exporter的监控
+- hosts: prometheus
+  roles:
+    - role: add_monitor/add_mysqld_exporter
+      tags: mysqld_exporter,add_mysqld_exporter

@@ -1,0 +1,66 @@
+# 创建一个目录保存所有的exporter
+- name: Create a directory to save all exporter
+  file:
+    path: /usr/local/monitor
+    state: directory
+
+# 解压二进制包
+- name: Unarchive the mysqld_exporter package
+  unarchive:
+    src: mysqld_exporter-{{ mysqld_exporter_version }}.linux-amd64.tar.gz
+    dest: /usr/local/monitor/
+
+# 重命名mysqld_exporter安装目录
+- name: Rename the path for mysqld_exporter
+  shell: mv /usr/local/monitor/mysqld_exporter-{{ mysqld_exporter_version }}.linux-amd64 /usr/local/monitor/mysqld_exporter
+
+# 创建日志目录并做好软链接
+- name: Create log path for mysqld_exporter
+  file:
+    path: /data/monitor/mysqld_exporter/logs
+    state: directory
+
+- name: Create logs link
+  file:
+    path: /usr/local/monitor/mysqld_exporter/logs
+    src: /data/monitor/mysqld_exporter/logs
+    state: link
+
+# 添加数据库授权
+- name: Grant privileges
+  shell: |
+    /usr/local/mysql/bin/mysql -u{{ mysql_user }} -p{{ mysql_password }} -P{{ mysql_port }} -e "CREATE USER '{{ mysqld_exporter_user }}'@'{{ ansible_ssh_host }}' IDENTIFIED BY '{{ mysqld_exporter_pw }}' WITH MAX_USER_CONNECTIONS 3;"
+    /usr/local/mysql/bin/mysql -u{{ mysql_user }} -p{{ mysql_password }} -P{{ mysql_port }} -e "GRANT PROCESS, REPLICATION CLIENT, SELECT ON *.* TO '{{ mysqld_exporter_user }}'@'{{ ansible_ssh_host }}';"
+    /usr/local/mysql/bin/mysql -u{{ mysql_user }} -p{{ mysql_password }} -P{{ mysql_port }} -e "FLUSH PRIVILEGES;"
+  ignore_errors: yes
+
+# 创建my.cnf文件
+- name: Create my.cnf
+  template:
+    src: mycnf.j2
+    dest: /usr/local/monitor/mysqld_exporter/my.cnf
+
+# 添加启动脚本
+- name: Add a script for launcher
+  template:
+    src: start_script.j2
+    dest: /usr/local/monitor/mysqld_exporter/launcher.sh
+    mode: 0755
+
+# 添加systemd脚本
+- name: Add systemd script
+  template:
+    src: systemd.j2
+    dest: /etc/systemd/system/mysqld_exporter.service
+
+# systemctl daemon-reload
+- name: Reload systemd daemon
+  systemd:
+    daemon-reload: yes
+
+# 启动mysqld_exporter
+- name: Start mysqld_exporter service
+  service:
+    name: mysqld_exporter
+    state: restarted
+    enabled: yes

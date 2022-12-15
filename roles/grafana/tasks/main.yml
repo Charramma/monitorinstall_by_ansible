@@ -1,0 +1,65 @@
+# 解压grafana二进制包
+- name: Unarchive the grafana package
+  unarchive:
+    src: grafana-{{ grafana_version }}.linux-amd64.tar.gz
+    dest: /usr/local/
+
+# 重命名grafana安装目录
+- name: Rename the path of grafana
+  shell: "mv /usr/local/grafana-{{ grafana_version }} /usr/local/grafana"
+
+# 创建数据目录
+- name: add data path
+  file:
+    path: /data/grafana/data
+    state: directory
+
+# 创建日志目录
+- name: add logs path
+  file:
+    path: /data/grafana/logs
+    state: directory
+
+# 将日志目录和数据目录软链接到安装目录下
+- name: Create data link
+  file:
+    path: /usr/local/grafana/data
+    src: /data/grafana/data
+    state: link
+
+- name: Create logs link
+  file:
+    path: /usr/local/grafana/logs
+    src: /data/grafana/logs
+    state: link
+
+# 修改配置文件
+- name: Change config of grafana
+  template:
+    src: config.j2
+    dest: /usr/local/grafana/conf/defaults.ini
+
+# 添加启动脚本
+- name: Add start script
+  template:
+    src: start_script.j2
+    dest: /usr/local/grafana/launcher.sh
+    mode: 0755
+
+# 添加service脚本
+- name: Add grafana.service
+  template:
+    src: grafana_service.j2
+    dest: /etc/systemd/system/grafana.service
+
+# systemctl daemon-reload
+- name: Reload systemd daemon
+  systemd:
+    daemon-reload: yes
+
+# 启动grafana
+- name: Start grafana service
+  service:
+    name: grafana
+    state: restarted
+    enabled: yes
