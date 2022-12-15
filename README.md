@@ -1,1 +1,1 @@
-# monitorinstall_by_ansible
+# 使用ansible-playbook安装prometheus、grafana、node_exporter、mysqld_exporter
