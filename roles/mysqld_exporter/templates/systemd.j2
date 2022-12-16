@@ -3,10 +3,10 @@ Description=mysqld_exporter
 After=network.target
 
 [Service]
-Type=forking
+Type=simple
 PIDFile=/usr/local/monitor/mysqld_exporter/run.pid
-ExecStart=/usr/local/monitor/mysqld_exporter/launcher.sh start
-ExecStop=/usr/local/monitor/mysqld_exporter/launcher.sh stop
+ExecStart=/usr/local/monitor/mysqld_exporter/mysqld_exporter --config.my-cnf=/usr/local/monitor/mysqld_exporter/my.cnf --web.listen-address=0.0.0.0:{{ mysqld_exporter_port }} --log.level=debug
+ExecStop=/bin/kill -HUP $MAINPID
 Restart=Always
 User=root
 Group=root

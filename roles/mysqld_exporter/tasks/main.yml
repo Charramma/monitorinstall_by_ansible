@@ -14,18 +14,6 @@
 - name: Rename the path for mysqld_exporter
   shell: mv /usr/local/monitor/mysqld_exporter-{{ mysqld_exporter_version }}.linux-amd64 /usr/local/monitor/mysqld_exporter
 
-# 创建日志目录并做好软链接
-- name: Create log path for mysqld_exporter
-  file:
-    path: /data/monitor/mysqld_exporter/logs
-    state: directory
-
-- name: Create logs link
-  file:
-    path: /usr/local/monitor/mysqld_exporter/logs
-    src: /data/monitor/mysqld_exporter/logs
-    state: link
-
 # 添加数据库授权
 - name: Grant privileges
   shell: |
@@ -39,13 +27,6 @@
   template:
     src: mycnf.j2
     dest: /usr/local/monitor/mysqld_exporter/my.cnf
-
-# 添加启动脚本
-- name: Add a script for launcher
-  template:
-    src: start_script.j2
-    dest: /usr/local/monitor/mysqld_exporter/launcher.sh
-    mode: 0755
 
 # 添加systemd脚本
 - name: Add systemd script
