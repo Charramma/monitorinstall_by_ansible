@@ -1,17 +1,16 @@
 [Unit]
-Description=Node_exporter
+Description=node_exporter
+Documentation=https://prometheus.io
 After=network.target
 
 [Service]
-Type=forking
-PIDFile=/usr/local/monitor/node_exporter/run.pid
-ExecStart=/usr/local/monitor/node_exporter/launcher.sh start
-ExecStop=/usr/local/monitor/node_exporter/launcher.sh stop
-Restart=Always
-User=root
-Group=root
-LimitNOFILE=65535
-LimitNPROC=65535
+type=simple
+PIDFile=/usr/local/monitor/node_exporter
+ExecStart=/usr/local/monitor/node_exporter/node_exporter --web.listen-address=0.0.0.0:{{ node_exporter_port }}
+ExecReload=/bin/kill -HUP $MAINPID
+TimeoutStopSec=20s
+Restart=always
+
 
 [Install]
 WantedBy=multi-user.target
