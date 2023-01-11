@@ -14,23 +14,11 @@
     path: /data/prometheus/data
     state: directory
 
-# 创建日志目录
-- name: add logs path
-  file:
-    path: /data/prometheus/logs
-    state: directory
-
-# 将日志目录和数据目录软链接到安装目录下
+# 将数据目录软链接到安装目录下
 - name: Create data link
   file: 
     path: /usr/local/prometheus/data
     src: /data/prometheus/data
-    state: link
-
-- name: Create logs link
-  file: 
-    path: /usr/local/prometheus/logs
-    src: /data/prometheus/logs
     state: link
 
 # 添加配置文件
@@ -39,17 +27,11 @@
     src: config.j2
     dest: /usr/local/prometheus/prometheus.yml
 
-# 添加启动脚本
-- name: Add start script
-  template:
-    src: start_script.j2
-    dest: /usr/local/prometheus/launcher.sh
-    mode: 0755
 
 # 添加service脚本
 - name: Add prometheus.service
   template:
-    src: prometheus_service.j2
+    src: systemd.j2
     dest: /etc/systemd/system/prometheus.service
 
 # systemctl daemon-reload

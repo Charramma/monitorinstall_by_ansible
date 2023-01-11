@@ -17,7 +17,7 @@
 # 添加systemd脚本
 - name: Add systemd script
   template:
-    src: node_service.j2
+    src: systemd.j2
     dest: /etc/systemd/system/node_exporter.service
 
 # systemctl daemon-reload
