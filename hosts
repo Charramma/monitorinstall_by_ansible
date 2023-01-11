@@ -18,9 +18,9 @@ vm-1
 grafana_version=7.5.4
 grafana_port=3030
 grafana_smtp_host=smtp.exmail.qq.com:465
-grafana_smtp_user=huang.zyn@qq.com
-grafana_smtp_pw=xhflqxclunjfbfha
-grafana_smtp_from_address=huang.zyn@qq.com
+grafana_smtp_user=lalala@qq.com
+grafana_smtp_pw=dfasdfqwefasdfvcsdfasdfdsf
+grafana_smtp_from_address=lalala@qq.com
 grafana_smtp_from_name=huang.zyn
 
 ########### node_exporter ############
@@ -41,4 +41,4 @@ vm-2
 mysqld_exporter_version=0.14.0
 mysqld_exporter_port=9089
 mysqld_exporter_user=mysqld_exporter
-mysqld_exporter_pw=mysqld_exporter123#
+mysqld_exporter_pw=mysqldExporter1234
