@@ -1,0 +1,17 @@
+[Unit]
+Description=Grafana
+After=network.target
+
+[Service]
+Type=simple
+PIDFile=/usr/local/grafana/run.pid
+ExecStart=/usr/local/grafana/bin/grafana-server --config=/usr/local/grafana/conf/defaults.ini --homepath=/usr/local/grafana --pidfile=/usr/local/grafana/run.pid
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=on-failure
+User=root
+Group=root
+LimitNOFILE=65535
+LimitNPROC=65535
+
+[Install]
+WantedBy=multi-user.target

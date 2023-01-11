@@ -14,23 +14,11 @@
     path: /data/grafana/data
     state: directory
 
-# 创建日志目录
-- name: add logs path
-  file:
-    path: /data/grafana/logs
-    state: directory
-
-# 将日志目录和数据目录软链接到安装目录下
+# 将数据目录软链接到安装目录下
 - name: Create data link
   file:
     path: /usr/local/grafana/data
     src: /data/grafana/data
-    state: link
-
-- name: Create logs link
-  file:
-    path: /usr/local/grafana/logs
-    src: /data/grafana/logs
     state: link
 
 # 修改配置文件
@@ -39,17 +27,10 @@
     src: config.j2
     dest: /usr/local/grafana/conf/defaults.ini
 
-# 添加启动脚本
-- name: Add start script
-  template:
-    src: start_script.j2
-    dest: /usr/local/grafana/launcher.sh
-    mode: 0755
-
 # 添加service脚本
 - name: Add grafana.service
   template:
-    src: grafana_service.j2
+    src: systemd.j2
     dest: /etc/systemd/system/grafana.service
 
 # systemctl daemon-reload
