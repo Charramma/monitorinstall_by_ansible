@@ -1,0 +1,35 @@
+# 创建一个目录保存所有的exporter
+- name: Create a directory to save all exporter
+  file:
+    path: /usr/local/monitor
+    state: directory
+
+# 将zookeeper二进制文件传送到远程主机
+- name: Copy zookeeper_exporter to remote host
+  copy: 
+    src: zookeeper_exporter
+    dest: /usr/local/monitor/zookeeper_exporter/
+    mode: 0755
+
+# 获取当前服务器上zookeeper的端口
+- name: Get zookeeper port
+  shell: grep clientPort /usr/local/zookeeper/conf/zoo.cfg | awk -F '=' '{print $2}'
+  register: zookeeper_port
+
+# 添加Systemd Service管理脚本
+- name: Add systemd script
+  template:
+    src: systemd.j2
+    dest: /etc/systemd/system/zookeeper_exporter.service
+
+# systemctl daemon-reload
+- name: Reload systemd daemon
+  systemd:
+    daemon-reload: yes
+
+# 启动zookeeper_exporter
+- name: Start zookeeper_exporter
+  service:
+    name: zookeeper_exporter
+    state: restarted
+    enabled: yes

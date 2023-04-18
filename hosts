@@ -42,3 +42,12 @@ mysqld_exporter_version=0.14.0
 mysqld_exporter_port=9089
 mysqld_exporter_user=mysqld_exporter
 mysqld_exporter_pw=mysqldExporter1234
+
+########## zookeeper_exporter #########
+# 与zookeeper装在同一台机器上
+[zookeeper_exporter]
+vm-1
+vm-2
+
+[zookeeper_exporter:vars]
+zookeeper_exporter_port=9256

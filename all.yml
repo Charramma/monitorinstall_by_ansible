@@ -17,4 +17,8 @@
 
 # 安装mysql_exporter
 - import_playbook: mysqld_exporter.yml
-  tags: mysqld_exporter.yml
+  tags: mysqld_exporter
+
+# 安装zookeeper_exporter
+- import_playbook: zookeeper_exporter.yml
+  tags: zookeeper_exporter

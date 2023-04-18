@@ -1,0 +1,11 @@
+# 安装zookeeper_exporter
+- hosts: zookeeper_exporter
+  roles:
+    - role: zookeeper_exporter
+      tags: zookeeper_exporter,install_zookeeper_exporter
+
+# 在prometheus中添加zookeeper_exporter的监控
+- hosts: prometheus
+  roles:
+    - role: add_monitor/add_zookeeper_exporter
+      tags: zookeeper,add_zookeeper_exporter
