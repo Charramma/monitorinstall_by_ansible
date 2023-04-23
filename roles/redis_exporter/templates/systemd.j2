@@ -1,0 +1,13 @@
+[Unit]
+Description=Redis Exporter
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/monitor/redis_exporter/redis_exporter -redis-only-metrics -redis.addr redis://{{ ansible_ssh_host }}:{{ item.0 }} -redis.password {{ redis_pw }} -web.listen-address=:{{ item.1 }} &
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=always
+RestartSec=10s
+
+[Install]
+WantedBy=multi-user.target

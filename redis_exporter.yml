@@ -1,0 +1,6 @@
+# 安装redis_exporter
+- hosts: redis_exporter
+  roles: 
+    - role: redis_exporter
+      tags: redis_exporter, install_redis_exporter
+      when: inventory_hostname == redis_exporter_in

@@ -14,7 +14,6 @@
 - import_playbook: node_exporter.yml
   tags: node_exporter
 
-
 # 安装mysql_exporter
 - import_playbook: mysqld_exporter.yml
   tags: mysqld_exporter
@@ -22,3 +21,7 @@
 # 安装zookeeper_exporter
 - import_playbook: zookeeper_exporter.yml
   tags: zookeeper_exporter
+
+# 安装redis_exporter
+- import_playbook: redis_exporter.yml
+  tags: redis_exporter
