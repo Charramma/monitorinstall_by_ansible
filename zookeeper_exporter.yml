@@ -8,4 +8,4 @@
 - hosts: prometheus
   roles:
     - role: add_monitor/add_zookeeper_exporter
-      tags: zookeeper,add_zookeeper_exporter
+      tags: zookeeper_exporter,add_zookeeper_exporter

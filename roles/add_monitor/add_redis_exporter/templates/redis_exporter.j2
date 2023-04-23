@@ -1,0 +1,11 @@
+[
+    {
+        "targets": [
+            "{{ hostvars[hostvars[groups['redis_exporter'][0]]['redis_exporter_in']].ansible_ssh_host }}:{{ item.1 }}"
+        ],
+        "labels": {
+            "instance": "redis-{{ item.0 }}",
+            "service": "redis"
+        }
+    }
+]
