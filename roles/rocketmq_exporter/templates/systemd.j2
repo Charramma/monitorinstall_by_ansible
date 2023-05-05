@@ -1,0 +1,13 @@
+[Unit]
+Description=Rocketmq Exporter
+After=network.target
+
+[Service]
+Type=simple
+ExecStart={{ java_path }} -jar /usr/local/monitor/rocketmq_exporter/rocketmq-exporter.jar --server.port={{ rocketmq_exporter_port }} --rocketmq.config.namesrvAddr={{ ansible_ssh_host }}:{{ rocketmq_namesrv_port }}
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=always
+RestartSec=10s
+
+[Install]
+WantedBy=multi-user.target

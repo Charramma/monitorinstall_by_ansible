@@ -62,3 +62,12 @@ redis_exporter_in='vm-1'
 redis_exporter_version=1.50.0
 redis_exporter_ports=[9121,9122,9123,9124]
 redis_cluster_ports=[43000,46000,47000,48000]
+
+############# rocketmq-exporter #############
+[rocketmq_exporter]
+vm-1
+vm-2
+
+[rocketmq_exporter:vars]
+rocketmq_namesrv_port=9876
+rocketmq_exporter_port=5557

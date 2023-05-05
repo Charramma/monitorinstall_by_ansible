@@ -1,0 +1,31 @@
+# 创建一个目录保存所有的exporter
+- name: Create a directory to save all exporter
+  file:
+    path: /usr/local/monitor
+    state: directory
+
+- name: Copy rocketmq-exporter jar package to remote
+  copy:
+    src: rocketmq-exporter.jar
+    dest: /usr/local/monitor/rocketmq_exporter/
+    mode: 0755
+
+# 添加systemd脚本
+- name: Add systemd script
+  template:
+    src: systemd.j2
+    dest: /etc/systemd/system/rocketmq-exporter.service
+  vars:
+    java_path: /usr/local/jdk1.8.0_111/bin/java
+
+# systemctl daemon-reload
+- name: Reload systemd daemon
+  systemd:
+    daemon-reload: yes
+
+# 启动rocketmq-exporter
+- name: Start rocketmq-exporter service
+  service:
+    name: rocketmq-exporter
+    state: restarted
+    enabled: yes

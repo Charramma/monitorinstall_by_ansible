@@ -1,0 +1,11 @@
+# 安装rocketmq_exporter
+- hosts: rocketmq_exporter
+  roles:
+    - role: rocketmq_exporter
+      tags: rocketmq_exporter,install_rocketmq_exporter
+
+# 在prometheus中添加rocketmq_exporter的监控
+- hosts: prometheus
+  roles:
+    - role: add_monitor/add_rocketmq_exporter
+      tags: rocketmq_exporter,add_rocketmq_exporter
