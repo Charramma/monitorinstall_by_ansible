@@ -1,11 +1,14 @@
 [
-    {
-        "targets": [
-            "{{ hostvars[hostvars[groups['redis_exporter'][0]]['redis_exporter_in']].ansible_ssh_host }}:{{ item.1 }}"
-        ],
-        "labels": {
-            "instance": "redis-{{ item.0 }}",
-            "service": "redis"
-        }
+{% for host in groups['redis_exporter'] %}
+{
+    "targets": [
+        "{{ hostvars[host].ansible_ssh_host }}:{{ item.exporter }}"
+    ],
+    "labels": {
+        "instance": "{{ hostvars[host].ansible_ssh_host }}-{{ item.redis }}",
+        "service": "redis"
     }
+}
+{% if not loop.last %},{% endif %}
+{% endfor %}
 ]

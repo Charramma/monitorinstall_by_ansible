@@ -18,10 +18,16 @@
 - name: Add systemd script
   template:
     src: systemd.j2
-    dest: /etc/systemd/system/redis_exporter_{{ item.0 }}.service
-  with_together:
-    - "{{ redis_cluster_ports }}"
-    - "{{ redis_exporter_ports }}"
+    dest: /etc/systemd/system/redis_exporter_{{ item.redis }}.service
+  with_items:
+    - {redis: 43000, exporter: 9121}
+    - {redis: 43001, exporter: 9221}
+    - {redis: 46000, exporter: 9122}
+    - {redis: 46001, exporter: 9222}
+    - {redis: 47000, exporter: 9123}
+    - {redis: 47001, exporter: 9223}
+    - {redis: 48000, exporter: 9124}
+    - {redis: 48001, exporter: 9224}
 
 # systemctl daemon-reload
 - name: Reload systemd daemon
@@ -31,7 +37,15 @@
 # 启动redis_exporter
 - name: Start redis_exporter service
   service:
-    name: "redis_exporter_{{ item }}"
+    name: "redis_exporter_{{ item.redis }}"
     state: restarted
     enabled: yes
-  with_items: "{{ redis_cluster_ports }}"
+  with_items:
+    - {redis: 43000, exporter: 9121}
+    - {redis: 43001, exporter: 9221}
+    - {redis: 46000, exporter: 9122}
+    - {redis: 46001, exporter: 9222}
+    - {redis: 47000, exporter: 9123}
+    - {redis: 47001, exporter: 9223}
+    - {redis: 48000, exporter: 9124}
+    - {redis: 48001, exporter: 9224}

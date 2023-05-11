@@ -58,10 +58,8 @@ vm-1
 vm-2
 
 [redis_exporter:vars]
-redis_exporter_in='vm-1'
 redis_exporter_version=1.50.0
-redis_exporter_ports=[9121,9122,9123,9124]
-redis_cluster_ports=[43000,46000,47000,48000]
+# 要修改exporter的端口和对应集群的关系，请修改roles/redis_exporter/tasks/main.yml和roles/add_monitor/add_redis_exporter/tasks/main.yml
 
 ############# rocketmq-exporter #############
 [rocketmq_exporter]

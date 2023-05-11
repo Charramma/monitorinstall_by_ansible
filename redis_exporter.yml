@@ -3,7 +3,6 @@
   roles: 
     - role: redis_exporter
       tags: redis_exporter, install_redis_exporter
-      when: inventory_hostname == redis_exporter_in
 
 # 在prometheus中添加redis_exporter的监控
 - hosts: prometheus

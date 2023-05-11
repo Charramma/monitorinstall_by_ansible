@@ -8,10 +8,16 @@
 - name: 
   template:
     src: redis_exporter.j2
-    dest: /usr/local/prometheus/groups/redis_exporter/redis-{{ item.0 }}.json
-  with_together: 
-    - "{{ hostvars[groups['redis_exporter'][0]]['redis_cluster_ports'] }}"
-    - "{{ hostvars[groups['redis_exporter'][0]]['redis_exporter_ports'] }}"
+    dest: /usr/local/prometheus/groups/redis_exporter/redis-{{ item.redis }}.json
+  with_items:
+    - {redis: 43000, exporter: 9121}
+    - {redis: 43001, exporter: 9221}
+    - {redis: 46000, exporter: 9122}
+    - {redis: 46001, exporter: 9222}
+    - {redis: 47000, exporter: 9123}
+    - {redis: 47001, exporter: 9223}
+    - {redis: 48000, exporter: 9124}
+    - {redis: 48001, exporter: 9224}
 
 # 修改prometheus配置文件
 - name:
@@ -25,7 +31,7 @@
               - /usr/local/prometheus/groups/redis_exporter/*.json
 
 # 重启prometheus
-- name: Start prometheus service
+- name: Retart prometheus service
   service:
     name: prometheus
     state: restarted
