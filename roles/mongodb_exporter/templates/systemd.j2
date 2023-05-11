@@ -5,7 +5,7 @@ After=network.target
 [Service]
 Type=simple
 PIDFile=/usr/local/monitor/mongodb_exporter/run.pid
-ExecStart=/usr/local/monitor/mongodb_exporter/mongodb_exporter --mongodb.uri=mongodb://{{ mongodb_monitor_user }}:{{ mongodb_monitor_pw }}@{{ ansible_ssh_host }}:{{ mongodb_port }} --web.listen-address={{ ansible_ssh_host }}:{{ mongodb_exporter_port }}
+ExecStart=/usr/local/monitor/mongodb_exporter/mongodb_exporter --mongodb.uri=mongodb://{{ mongodb_monitor_user }}:{{ mongodb_monitor_pw }}@{{ ansible_ssh_host }}:{{ mongodb_port }} --web.listen-address={{ ansible_ssh_host }}:{{ mongodb_exporter_port }} --collector.replicasetstatus=true --collect-all=true
 ExecStop=/bin/kill -HUP $MAINPID
 Restart=Always
 User=root
