@@ -1,0 +1,11 @@
+[
+    {
+        "targets": [
+            "{{ hostvars[item].ansible_ssh_host }}:{{ hostvars[item].mongodb_exporter_port }}"
+        ],
+        "labels": {
+            "instance": "{{ hostvars[item].inventory_hostname }}",
+            "service": "mongodb"
+        }
+    }
+]

@@ -1,0 +1,33 @@
+# 创建一个目录保存所有的exporter
+- name: Create a directory to save all exporter
+  file:
+    path: /usr/local/monitor
+    state: directory
+
+# 将mongodb_exporter包解压到远程主机
+- name: Unarchive the mongodb_exporter package
+  unarchive: 
+    src: mongodb_exporter-{{ mongodb_exporter_version }}.linux-amd64.tar.gz
+    dest: /usr/local/monitor/
+
+# 重命名mongodb_exporter安装目录
+- name: Rename the path of mongodb_exporter
+  shell: mv /usr/local/monitor/mongodb_exporter-{{ mongodb_exporter_version }}.linux-amd64 /usr/local/monitor/mongodb_exporter
+
+# 添加systemd脚本
+- name: Add systemd script
+  template:
+    src: systemd.j2
+    dest: /etc/systemd/system/mongodb_exporter.service
+
+# systemctl daemon-reload
+- name: Reload systemd daemon
+  systemd:
+    daemon-reload: yes
+
+# 启动mongodb_exporter
+- name: Start mongodb_exporter service
+  service:
+    name: mongodb_exporter
+    state: restarted
+    enabled: yes

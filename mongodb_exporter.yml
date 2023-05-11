@@ -1,0 +1,11 @@
+# 安装mongodb_exporter
+- hosts: mongodb_exporter
+  roles:
+    - role: mongodb_exporter
+      tags: mongodb_exporter,install_mongodb_exporter
+
+# 在prometheus中添加mongodb_exporter的监控
+- hosts: prometheus
+  roles:
+    - role: add_monitor/add_mongodb_exporter
+      tags: mongodb_exporter,add_mongodb_exporter

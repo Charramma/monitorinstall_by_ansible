@@ -1,0 +1,17 @@
+[Unit]
+Description=mongodb_exporter
+After=network.target
+
+[Service]
+Type=simple
+PIDFile=/usr/local/monitor/mongodb_exporter/run.pid
+ExecStart=/usr/local/monitor/mongodb_exporter/mongodb_exporter --mongodb.uri=mongodb://{{ mongodb_monitor_user }}:{{ mongodb_monitor_pw }}@{{ ansible_ssh_host }}:{{ mongodb_port }} --web.listen-address={{ ansible_ssh_host }}:{{ mongodb_exporter_port }}
+ExecStop=/bin/kill -HUP $MAINPID
+Restart=Always
+User=root
+Group=root
+LimitNOFILE=65535
+LimitNPROC=65535
+
+[Install]
+WantedBy=multi-user.target

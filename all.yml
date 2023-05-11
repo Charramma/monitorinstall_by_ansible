@@ -29,3 +29,7 @@
 # 安装rocketmq-exporter
 - import_playbook: rocketmq_exporter.yml
   tags: rocketmq_exporter
+
+# 安装mongodb_exporter
+- import_playbook: mongodb_exporter.yml
+  tags: mongodb_exporter

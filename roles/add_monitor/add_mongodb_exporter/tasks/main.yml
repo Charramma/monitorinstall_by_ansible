@@ -1,0 +1,30 @@
+# 创建一个文件夹存放mongodb_exporter信息
+- name: Create dir
+  file:
+    path: /usr/local/prometheus/groups/mongodb_exporter
+    state: directory
+
+# 添加mongodb_exporter地址文件
+- name:
+  template:
+    src: mongodb_exporter.j2
+    dest: /usr/local/prometheus/groups/mongodb_exporter/{{ hostvars[item].inventory_hostname }}.json
+  with_items: "{{ groups['mongodb_exporter'] }}"
+
+# 修改prometheus配置文件
+- name:
+  blockinfile:
+    path: /usr/local/prometheus/prometheus.yml
+    marker: '  # {mark} mongodb_exporter'
+    block: |2
+        - job_name: "mongodb_exporter"
+          file_sd_configs:
+          - files:
+              - /usr/local/prometheus/groups/mongodb_exporter/*.json
+
+# 重启prometheus
+- name: Start prometheus service
+  service:
+    name: prometheus
+    state: restarted
+    enabled: yes
