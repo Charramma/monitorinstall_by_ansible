@@ -4,7 +4,7 @@ Documentation=https://prometheus.io
 After=network.target
 
 [Service]
-type=simple
+Type=simple
 PIDFile=/usr/local/monitor/node_exporter/run.pid
 ExecStart=/usr/local/monitor/node_exporter/node_exporter --web.listen-address=0.0.0.0:{{ node_exporter_port }}
 ExecReload=/bin/kill -HUP $MAINPID
