@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 Type=simple
-ExecStart=/usr/local/monitor/zookeeper_exporter/zookeeper_exporter -bind-addr :{{ zookeeper_exporter_port }} -zookeeper {{ ansible_ssh_host }}:{{ zookeeper_port }}
+ExecStart=/usr/local/monitor/zookeeper_exporter/zookeeper_exporter -bind-addr :{{ zookeeper_exporter_port }} -zookeeper {{ ansible_ssh_host }}:{{ zookeeper_port.stdout }}
 ExecReload=/bin/kill -HUP $MAINPID
 Restart=always
 RestartSec=10s
